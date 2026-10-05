@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apna Mart – Buy & Sell</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;background:#f5f5f5;color:#222}
+header{background:#fff;border-bottom:1px solid #ddd;position:sticky;top:0;z-index:10}
+.nav{max-width:1100px;margin:auto;padding:14px 18px;display:flex;align-items:center;gap:18px}
+.logo{font-size:25px;font-weight:800;color:#146b5b;white-space:nowrap}.tag{font-size:11px;color:#777}
+.search{flex:1;display:flex;border:1px solid #bbb;border-radius:6px;overflow:hidden;background:#fff}
+.search input{flex:1;border:0;padding:12px;font-size:15px;outline:none}.search button{border:0;background:#146b5b;color:#fff;padding:0 18px;font-size:18px}
+.login{border:0;background:none;font-weight:bold;cursor:pointer}.sell{background:#ffd21f;border:2px solid #222;border-radius:22px;padding:10px 18px;font-weight:800;cursor:pointer}
+.hero{background:#e8f3f0;padding:35px 18px}.hero-inner{max-width:1100px;margin:auto}.hero h1{font-size:34px;margin-bottom:8px}.hero p{color:#555;margin-bottom:22px}
+.location{display:inline-block;background:#fff;border:1px solid #ddd;padding:11px 15px;border-radius:6px}
+main{max-width:1100px;margin:28px auto;padding:0 18px}.title{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.title h2{font-size:23px}
+.categories{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:32px}.cat{background:#fff;border:1px solid #ddd;border-radius:9px;padding:17px 8px;text-align:center;cursor:pointer;transition:.2s}.cat:hover{transform:translateY(-2px);box-shadow:0 4px 12px #0001}.icon{font-size:30px;margin-bottom:8px}.cat span{font-size:14px}
+.ads{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.card{background:#fff;border:1px solid #ddd;border-radius:8px;overflow:hidden;position:relative}.pic{height:165px;background:#e9e9e9;display:flex;align-items:center;justify-content:center;font-size:52px}.info{padding:13px}.price{font-size:19px;font-weight:800;margin-bottom:6px}.name{font-size:15px;margin-bottom:10px}.meta{font-size:12px;color:#777;display:flex;justify-content:space-between}.heart{position:absolute;right:10px;top:10px;background:#fff;border:0;border-radius:50%;width:34px;height:34px;font-size:20px;cursor:pointer}
+footer{margin-top:45px;background:#222;color:#ddd;padding:30px 18px;text-align:center}.modal{display:none;position:fixed;inset:0;background:#0008;z-index:20;align-items:center;justify-content:center}.box{background:#fff;border-radius:12px;width:min(500px,92%);padding:25px}.box h2{margin-bottom:18px}.box input,.box textarea,.box select{width:100%;padding:12px;margin:7px 0;border:1px solid #ccc;border-radius:6px}.actions{display:flex;gap:10px;margin-top:12px}.actions button{flex:1;padding:12px;border:0;border-radius:6px;cursor:pointer;font-weight:bold}.cancel{background:#eee}.submit{background:#146b5b;color:#fff}
+@media(max-width:800px){.categories{grid-template-columns:repeat(3,1fr)}.ads{grid-template-columns:repeat(2,1fr)}.nav{gap:8px}.login{display:none}.hero h1{font-size:28px}}
+@media(max-width:500px){.nav{flex-wrap:wrap}.logo{width:100%}.search{order:3;width:100%;flex-basis:100%}.sell{margin-left:auto}.categories{grid-template-columns:repeat(3,1fr);gap:8px}.cat{padding:12px 4px}.ads{grid-template-columns:repeat(2,1fr);gap:9px}.pic{height:125px;font-size:40px}.info{padding:10px}.price{font-size:17px}}
+</style>
+</head>
+<body>
+<header><div class="nav">
+<div><div class="logo">🛒 Apna Mart</div><div class="tag">Buy • Sell • Discover</div></div>
+<div class="search"><input id="search" placeholder="Search cars, mobiles, bikes, furniture..."><button onclick="searchAds()">🔍</button></div>
+<button class="login" onclick="openLogin()">Login</button>
+<button class="sell" onclick="openSell()">＋ Sell Now</button>
+</div></header>
+
+<section class="hero"><div class="hero-inner">
+<h1>Apna Samaan, Apna Bazaar</h1><p>Buy and sell new or used products near you.</p>
+<div class="location">📍 <span id="loc">Select your location</span> ▾</div>
+</div></section>
+
+<main>
+<div class="title"><h2>Browse Categories</h2></div>
+<div class="categories">
+<div class="cat" onclick="filter('Mobiles')"><div class="icon">📱</div><span>Mobiles</span></div>
+<div class="cat" onclick="filter('Vehicles')"><div class="icon">🚗</div><span>Cars & Bikes</span></div>
+<div class="cat" onclick="filter('Electronics')"><div class="icon">💻</div><span>Electronics</span></div>
+<div class="cat" onclick="filter('Property')"><div class="icon">🏠</div><span>Property</span></div>
+<div class="cat" onclick="filter('Furniture')"><div class="icon">🛋️</div><span>Furniture</span></div>
+<div class="cat" onclick="filter('Jobs')"><div class="icon">💼</div><span>Jobs</span></div>
+</div>
+
+<div class="title"><h2>Latest Ads</h2><span id="resultCount">8 ads</span></div>
+<div class="ads" id="ads">
+<div class="card" data-cat="Mobiles"><button class="heart">♡</button><div class="pic">📱</div><div class="info"><div class="price">₹8,500</div><div class="name">Samsung Galaxy Smartphone</div><div class="meta"><span>Today</span><span>Nearby</span></div></div></div>
+<div class="card" data-cat="Vehicles"><button class="heart">♡</button><div class="pic">🏍️</div><div class="info"><div class="price">₹48,000</div><div class="name">Used Bike – Good Condition</div><div class="meta"><span>Today</span><span>Nearby</span></div></div></div>
+<div class="card" data-cat="Electronics"><button class="heart">♡</button><div class="pic">💻</div><div class="info"><div class="price">₹22,000</div><div class="name">Laptop for Sale</div><div class="meta"><span>Yesterday</span><span>Nearby</span></div></div></div>
+<div class="card" data-cat="Furniture"><button class="heart">♡</button><div class="pic">🛋️</div><div class="info"><div class="price">₹6,500</div><div class="name">Sofa Set</div><div class="meta"><span>Today</span><span>Nearby</span></div></div></div>
+<div class="card" data-cat="Vehicles"><button class="heart">♡</button><div class="pic">🚗</div><div class="info"><div class="price">₹2,85,000</div><div class="name">Used Car</div><div class="meta"><span>2 days ago</span><span>Nearby</span></div></div></div>
+<div class="card" data-cat="Property"><button class="heart">♡</button><div class="pic">🏠</div><div class="info"><div class="price">₹12,000/mo</div><div class="name">1 BHK Room for Rent</div><div class="meta"><span>Today</span><span>Nearby</span></div></div></div>
+<div class="card" data-cat="Electronics"><button class="heart">♡</button><div class="pic">📺</div><div class="info"><div class="price">₹9,000</div><div class="name">Smart LED TV</div><div class="meta"><span>Yesterday</span><span>Nearby</span></div></div></div>
+<div class="card" data-cat="Jobs"><button class="heart">♡</button><div class="pic">💼</div><div class="info"><div class="price">Hiring</div><div class="name">Sales Executive Job</div><div class="meta"><span>Today</span><span>Nearby</span></div></div></div>
+</div>
+</main>
+
+<footer>© 2026 Apna Mart — Buy • Sell • Discover<br><small>A demo marketplace website. Real accounts, payments and database can be added next.</small></footer>
+
+<div class="modal" id="sellModal"><div class="box">
+<h2>Post Your Ad</h2><input placeholder="Product title"><input placeholder="Price (₹)" type="number"><select><option>Select category</option><option>Mobiles</option><option>Vehicles</option><option>Electronics</option><option>Property</option><option>Furniture</option><option>Jobs</option></select><input placeholder="Location"><textarea rows="4" placeholder="Description"></textarea><div class="actions"><button class="cancel" onclick="closeModal()">Cancel</button><button class="submit" onclick="alert('Demo: Your ad form is ready. Database will be connected in the next version.');closeModal()">Post Ad</button></div>
+</div></div>
+
+<div class="modal" id="loginModal"><div class="box">
+<h2>Login / Signup</h2><input placeholder="Mobile number or Email"><input placeholder="Password" type="password"><div class="actions"><button class="cancel" onclick="closeModal()">Cancel</button><button class="submit" onclick="alert('Demo login. Real authentication can be connected next.');closeModal()">Continue</button></div>
+</div></div>
+
+<script>
+function openSell(){document.getElementById('sellModal').style.display='flex'}
+function openLogin(){document.getElementById('loginModal').style.display='flex'}
+function closeModal(){document.querySelectorAll('.modal').forEach(x=>x.style.display='none')}
+function filter(cat){document.querySelectorAll('.card').forEach(c=>c.style.display=c.dataset.cat===cat?'block':'none');document.getElementById('resultCount').textContent='Category: '+cat}
+function searchAds(){let q=document.getElementById('search').value.toLowerCase();let n=0;document.querySelectorAll('.card').forEach(c=>{let show=c.innerText.toLowerCase().includes(q);c.style.display=show?'block':'none';if(show)n++});document.getElementById('resultCount').textContent=n+' ads'}
+document.querySelectorAll('.heart').forEach(b=>b.onclick=()=>b.textContent=b.textContent==='♡'?'♥':'♡')
+</script>
+</body>
+</html>
