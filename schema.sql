@@ -1,0 +1,36 @@
+PRAGMA foreign_keys=ON;
+CREATE TABLE IF NOT EXISTS users (
+ id INTEGER PRIMARY KEY AUTOINCREMENT,
+ name TEXT NOT NULL,
+ email TEXT NOT NULL UNIQUE,
+ phone TEXT DEFAULT '',
+ password_hash TEXT NOT NULL,
+ password_salt TEXT NOT NULL,
+ created_at INTEGER NOT NULL
+);
+CREATE TABLE IF NOT EXISTS sessions (
+ token TEXT PRIMARY KEY,
+ user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+ expires_at INTEGER NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_sessions_expiry ON sessions(expires_at);
+CREATE TABLE IF NOT EXISTS ads (
+ id INTEGER PRIMARY KEY AUTOINCREMENT,
+ user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+ title TEXT NOT NULL,
+ price REAL NOT NULL,
+ category TEXT NOT NULL,
+ location TEXT NOT NULL,
+ description TEXT DEFAULT '',
+ image_key TEXT DEFAULT '',
+ emoji TEXT DEFAULT '📦',
+ status TEXT NOT NULL DEFAULT 'active',
+ created_at INTEGER NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_ads_category ON ads(category);
+CREATE INDEX IF NOT EXISTS idx_ads_created ON ads(created_at DESC);
+CREATE TABLE IF NOT EXISTS favorites (
+ user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+ ad_id INTEGER NOT NULL REFERENCES ads(id) ON DELETE CASCADE,
+ PRIMARY KEY(user_id,ad_id)
+);

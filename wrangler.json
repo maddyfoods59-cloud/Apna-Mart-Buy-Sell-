@@ -1,0 +1,12 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "apna-mart",
+  "pages_build_output_dir": ".",
+  "compatibility_date": "2026-10-05",
+  "d1_databases": [
+    {"binding": "DB", "database_name": "apna-mart-db", "database_id": "PASTE_D1_DATABASE_ID_HERE"}
+  ],
+  "r2_buckets": [
+    {"binding": "IMAGES", "bucket_name": "apna-mart-images"}
+  ]
+}

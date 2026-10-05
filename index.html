@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Apna Mart — Buy & Sell</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f6f7f8;color:#222}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+header{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid #ddd}.nav{max-width:1150px;margin:auto;padding:12px 16px;display:flex;align-items:center;gap:12px}
+.logo{font-weight:900;font-size:25px;color:#075e54;white-space:nowrap}.logo small{display:block;font-size:10px;color:#777;font-weight:500}
+.search{display:flex;flex:1;border:1px solid #bbb;border-radius:7px;overflow:hidden}.search input{width:100%;border:0;padding:12px;outline:0}.search button{border:0;background:#075e54;color:#fff;padding:0 18px}
+.navbtn{border:0;background:#fff;font-weight:700}.sell{background:#ffd21f;border:2px solid #222;border-radius:24px;padding:10px 17px;font-weight:800}
+main{max-width:1150px;margin:auto;padding:18px 16px}.hero{background:#e7f4f1;border-radius:12px;padding:30px;margin-bottom:22px}.hero h1{margin:0 0 8px;font-size:32px}.hero p{margin:0 0 18px;color:#555}.loc{background:#fff;border:1px solid #ddd;padding:10px 14px;border-radius:7px}
+.sectionhead{display:flex;justify-content:space-between;align-items:center;margin:24px 0 12px}.sectionhead h2{margin:0;font-size:22px}
+.cats{display:grid;grid-template-columns:repeat(8,1fr);gap:10px}.cat{background:#fff;border:1px solid #ddd;border-radius:10px;padding:13px 5px;text-align:center}.cat:hover{box-shadow:0 4px 12px #0001}.cat i{font-style:normal;font-size:28px;display:block;margin-bottom:7px}.cat span{font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:#fff;border:1px solid #ddd;border-radius:9px;overflow:hidden;position:relative}.photo{height:175px;background:#eee;display:flex;align-items:center;justify-content:center;font-size:58px;overflow:hidden}.photo img{width:100%;height:100%;object-fit:cover}.cardbody{padding:12px}.price{font-weight:900;font-size:19px}.name{margin:6px 0 10px;min-height:34px}.meta{font-size:12px;color:#777}.fav{position:absolute;right:9px;top:9px;border:0;background:#fff;border-radius:50%;width:34px;height:34px;font-size:21px}.empty{text-align:center;background:#fff;border:1px dashed #bbb;border-radius:10px;padding:35px;grid-column:1/-1;color:#777}
+footer{margin-top:40px;background:#202020;color:#ddd;text-align:center;padding:28px 16px}
+.modal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;z-index:50;padding:15px}.box{background:#fff;border-radius:12px;width:min(560px,100%);max-height:92vh;overflow:auto;padding:22px}.box h2{margin-top:0}.field{margin:10px 0}.field label{display:block;font-size:13px;font-weight:bold;margin-bottom:5px}.field input,.field textarea,.field select{width:100%;border:1px solid #ccc;border-radius:7px;padding:11px}.row{display:flex;gap:10px}.row>*{flex:1}.actions{display:flex;gap:10px;margin-top:15px}.actions button{flex:1;padding:11px;border:0;border-radius:7px;font-weight:700}.primary{background:#075e54;color:#fff}.secondary{background:#eee}.preview{height:150px;background:#eee;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-top:8px;overflow:hidden}.preview img{max-width:100%;max-height:100%}
+.tabs{display:flex;gap:8px;overflow:auto;margin-bottom:15px}.tab{border:1px solid #ccc;background:#fff;border-radius:20px;padding:8px 14px;white-space:nowrap}.tab.active{background:#075e54;color:#fff;border-color:#075e54}
+.profile{background:#fff;border:1px solid #ddd;border-radius:10px;padding:20px}.profile h2{margin-top:0}.stat{display:flex;gap:10px}.stat div{background:#f1f3f3;border-radius:8px;padding:12px;flex:1;text-align:center}.hidden{display:none}
+@media(max-width:850px){.cats{grid-template-columns:repeat(4,1fr)}.grid{grid-template-columns:repeat(3,1fr)}.navbtn{display:none}}
+@media(max-width:600px){.nav{flex-wrap:wrap}.logo{width:100%}.search{order:3;flex-basis:100%}.grid{grid-template-columns:repeat(2,1fr);gap:9px}.photo{height:135px;font-size:45px}.hero{padding:23px}.hero h1{font-size:27px}.cats{grid-template-columns:repeat(4,1fr)}.cat{padding:10px 3px}.cat i{font-size:23px}.cat span{font-size:11px}.row{flex-direction:column}}
+</style>
+</head>
+<body>
+<header><div class="nav">
+<div class="logo">🛒 Apna Mart<small>BUY • SELL • DISCOVER</small></div>
+<div class="search"><input id="search" placeholder="Search mobiles, bikes, cars, furniture..." oninput="searchAds()"><button onclick="searchAds()">🔍</button></div>
+<button class="navbtn" onclick="showPage('home')">Home</button><button class="navbtn" onclick="showPage('profile')">👤 Profile</button>
+<button class="sell" onclick="openSell()">＋ Sell</button>
+</div></header>
+
+<main>
+<section id="homePage">
+<div class="hero"><h1>Apna Samaan, Apna Bazaar</h1><p>अपने आसपास सामान खरीदें और आसानी से बेचें।</p><button class="loc" onclick="setLocation()">📍 <span id="location">Location चुनें</span></button></div>
+
+<div class="sectionhead"><h2>Categories</h2></div>
+<div class="cats">
+<div class="cat" onclick="filterCat('Mobiles')"><i>📱</i><span>Mobiles</span></div>
+<div class="cat" onclick="filterCat('Vehicles')"><i>🚗</i><span>Cars & Bikes</span></div>
+<div class="cat" onclick="filterCat('Electronics')"><i>💻</i><span>Electronics</span></div>
+<div class="cat" onclick="filterCat('Property')"><i>🏠</i><span>Property</span></div>
+<div class="cat" onclick="filterCat('Furniture')"><i>🛋️</i><span>Furniture</span></div>
+<div class="cat" onclick="filterCat('Jobs')"><i>💼</i><span>Jobs</span></div>
+<div class="cat" onclick="filterCat('Fashion')"><i>👕</i><span>Fashion</span></div>
+<div class="cat" onclick="filterCat('Other')"><i>📦</i><span>Other</span></div>
+</div>
+
+<div class="sectionhead"><h2 id="listingTitle">Latest Ads</h2><button class="tab" onclick="resetFilter()">All Ads</button></div>
+<div class="grid" id="ads"></div>
+</section>
+
+<section id="profilePage" class="hidden">
+<div class="profile"><h2>👤 My Profile</h2><p id="profileName">Guest User</p><div class="stat"><div><b id="myCount">0</b><br>My Ads</div><div><b id="favCount">0</b><br>Favourites</div></div><div class="actions"><button class="primary" onclick="openLogin()">Login / Signup</button><button class="secondary" onclick="showMyAds()">My Ads</button></div></div>
+</section>
+</main>
+
+<footer>© 2026 Apna Mart — Buy • Sell • Discover<br><small>Online marketplace • Secure accounts • Cloud database • Image storage</small></footer>
+
+<!-- SELL MODAL -->
+<div class="modal" id="sellModal"><div class="box">
+<h2>📢 Post Your Ad</h2>
+<div class="field"><label>Product / Ad Title</label><input id="adTitle" placeholder="e.g. iPhone 13 128GB"></div>
+<div class="row"><div class="field"><label>Price (₹)</label><input id="adPrice" type="number" placeholder="25000"></div><div class="field"><label>Category</label><select id="adCat"><option>Mobiles</option><option>Vehicles</option><option>Electronics</option><option>Property</option><option>Furniture</option><option>Jobs</option><option>Fashion</option><option>Other</option></select></div></div>
+<div class="field"><label>Location</label><input id="adLoc" placeholder="City / Area"></div>
+<div class="field"><label>Description</label><textarea id="adDesc" rows="4" placeholder="Product की condition और details लिखें..."></textarea></div>
+<div class="field"><label>Photo</label><input id="adPhoto" type="file" accept="image/*" onchange="previewPhoto()"><div class="preview" id="preview">📷 Photo preview</div></div>
+<div class="actions"><button class="secondary" onclick="closeModals()">Cancel</button><button class="primary" onclick="postAd()">Post Ad</button></div>
+</div></div>
+
+<!-- PRODUCT MODAL -->
+<div class="modal" id="productModal"><div class="box"><div id="productDetails"></div><div class="actions"><button class="secondary" onclick="closeModals()">Close</button><button class="primary" onclick="contactSeller()">💬 Contact Seller</button></div></div></div>
+
+<!-- LOGIN / SIGNUP -->
+<div class="modal" id="loginModal"><div class="box"><h2 id="authTitle">👤 Login to Apna Mart</h2><div class="tabs"><button class="tab active" id="loginTab" onclick="setAuthMode('login')">Login</button><button class="tab" id="signupTab" onclick="setAuthMode('signup')">Create account</button></div><div class="field" id="nameField" style="display:none"><label>Name</label><input id="userName" placeholder="Your full name"></div><div class="field"><label>Email</label><input id="userEmail" type="email" placeholder="you@example.com" autocomplete="email"></div><div class="field"><label>Mobile (optional)</label><input id="userPhone" type="tel" placeholder="10-digit mobile number" autocomplete="tel"></div><div class="field"><label>Password</label><input id="userPassword" type="password" placeholder="Minimum 6 characters" autocomplete="current-password"></div><div class="actions"><button class="secondary" onclick="closeModals()">Cancel</button><button class="primary" id="authSubmit" onclick="submitAuth()">Login</button></div></div></div>
+
+<script>
+const defaults=[
+{cat:"Mobiles",price:"8500",name:"Samsung Galaxy Smartphone",emoji:"📱",loc:"Nearby"},
+{cat:"Vehicles",price:"48000",name:"Used Bike — Good Condition",emoji:"🏍️",loc:"Nearby"},
+{cat:"Electronics",price:"22000",name:"Laptop for Sale",emoji:"💻",loc:"Nearby"},
+{cat:"Furniture",price:"6500",name:"Sofa Set",emoji:"🛋️",loc:"Nearby"},
+{cat:"Vehicles",price:"285000",name:"Used Car",emoji:"🚗",loc:"Nearby"},
+{cat:"Property",price:"12000",name:"1 BHK Room for Rent",emoji:"🏠",loc:"Nearby"},
+{cat:"Electronics",price:"9000",name:"Smart LED TV",emoji:"📺",loc:"Nearby"},
+{cat:"Jobs",price:"0",name:"Sales Executive Job",emoji:"💼",loc:"Nearby"},
+{cat:"Fashion",price:"1200",name:"Men's Jacket",emoji:"👕",loc:"Nearby"},
+{cat:"Other",price:"500",name:"Home Item",emoji:"📦",loc:"Nearby"}
+];
+let activeFilter="";
+const icons={Mobiles:"📱",Vehicles:"🚗",Electronics:"💻",Property:"🏠",Furniture:"🛋️",Jobs:"💼",Fashion:"👕",Other:"📦"};
+
+function getUserAds(){return JSON.parse(localStorage.getItem("apnaMartUserAds")||"[]")}
+function setUserAds(x){localStorage.setItem("apnaMartUserAds",JSON.stringify(x))}
+function getFav(){return JSON.parse(localStorage.getItem("apnaMartFav")||"[]")}
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+function allAds(){return [...getUserAds(),...defaults]}
+function money(x){return Number(x)?("₹"+Number(x).toLocaleString("en-IN")):"Contact"}
+function render(list=allAds()){
+ const box=document.getElementById("ads");box.innerHTML="";
+ if(!list.length){box.innerHTML='<div class="empty">कोई ad नहीं मिला।</div>';return}
+ list.forEach((a,i)=>{
+  const user=getUserAds().some(x=>x.id===a.id);
+  const fav=getFav().includes(a.id||("d"+i));
+  const c=document.createElement("div");c.className="card";
+  c.innerHTML=`<button class="fav" onclick="toggleFav('${a.id||("d"+i)}')">${fav?"♥":"♡"}</button>
+  <div class="photo">${a.photo?`<img src="${a.photo}">`:(a.emoji||icons[a.cat]||"📦")}</div>
+  <div class="cardbody"><div class="price">${money(a.price)}</div><div class="name">${esc(a.name)}</div><div class="meta">📍 ${esc(a.loc||"Nearby")} · ${user?"Just now":"Today"}</div>
+  ${user?`<button onclick="deleteAd('${a.id}')" style="margin-top:9px;border:0;border-radius:6px;padding:7px;background:#eee">Delete</button>`:""}</div>`;
+  c.onclick=e=>{if(e.target.closest("button"))return;openProduct(a)}
+  box.appendChild(c);
+ });
+ document.getElementById("listingTitle").textContent=activeFilter?activeFilter+" Ads":"Latest Ads";
+ document.getElementById("myCount").textContent=getUserAds().length;
+ document.getElementById("favCount").textContent=getFav().length;
+}
+function searchAds(){const q=document.getElementById("search").value.toLowerCase();activeFilter="";render(allAds().filter(a=>(a.name+" "+a.cat+" "+a.loc+" "+(a.desc||"")).toLowerCase().includes(q)))}
+function filterCat(cat){activeFilter=cat;document.getElementById("search").value="";render(allAds().filter(a=>a.cat===cat))}
+function resetFilter(){activeFilter="";document.getElementById("search").value="";render()}
+function toggleFav(id){let f=getFav();f=f.includes(id)?f.filter(x=>x!==id):[...f,id];localStorage.setItem("apnaMartFav",JSON.stringify(f));render(activeFilter?allAds().filter(a=>a.cat===activeFilter):allAds())}
+function openProduct(a){document.getElementById("productDetails").innerHTML=`<div class="photo">${a.photo?`<img src="${a.photo}">`:(a.emoji||icons[a.cat]||"📦")}</div><h2>${esc(a.name)}</h2><h2>${money(a.price)}</h2><p><b>Category:</b> ${esc(a.cat)}</p><p>📍 ${esc(a.loc||"Nearby")}</p><p>${esc(a.desc||"Seller ने कोई description नहीं दिया।")}</p>`;document.getElementById("productModal").style.display="flex"}
+function openSell(){document.getElementById("sellModal").style.display="flex"}
+function openLogin(){document.getElementById("loginModal").style.display="flex"}
+function closeModals(){document.querySelectorAll(".modal").forEach(x=>x.style.display="none")}
+function previewPhoto(){const f=document.getElementById("adPhoto").files[0];if(!f)return;const r=new FileReader();r.onload=()=>document.getElementById("preview").innerHTML=`<img src="${r.result}">`;r.readAsDataURL(f)}
+function postAd(){
+ const title=document.getElementById("adTitle").value.trim(),price=document.getElementById("adPrice").value,cat=document.getElementById("adCat").value,loc=document.getElementById("adLoc").value.trim(),desc=document.getElementById("adDesc").value.trim(),file=document.getElementById("adPhoto").files[0];
+ if(!title||!price||!loc){alert("Title, price और location भरें।");return}
+ const finish=photo=>{let a=getUserAds();a.unshift({id:"u"+Date.now(),cat,price,name:title,loc,desc,photo,emoji:icons[cat]});setUserAds(a);closeModals();clearForm();render();alert("✅ आपका ad पोस्ट हो गया!")}
+ if(file){const r=new FileReader();r.onload=()=>finish(r.result);r.readAsDataURL(file)}else finish("");
+}
+function clearForm(){["adTitle","adPrice","adLoc","adDesc"].forEach(id=>document.getElementById(id).value="");document.getElementById("adPhoto").value="";document.getElementById("preview").textContent="📷 Photo preview"}
+function deleteAd(id){setUserAds(getUserAds().filter(a=>a.id!==id));render()}
+function setLocation(){const x=prompt("अपना City / Area लिखें:");if(x)document.getElementById("location").textContent=x}
+function login(){const n=document.getElementById("userName").value.trim();if(!n){alert("Name डालें");return}localStorage.setItem("apnaMartUser",n);document.getElementById("profileName").textContent=n;closeModals();alert("Welcome, "+n+"!");showPage("profile")}
+function showMyAds(){showPage("home");activeFilter="";render(getUserAds())}
+function showPage(p){document.getElementById("homePage").classList.toggle("hidden",p!=="home");document.getElementById("profilePage").classList.toggle("hidden",p!=="profile");if(p==="profile"){document.getElementById("profileName").textContent=localStorage.getItem("apnaMartUser")||"Guest User";document.getElementById("myCount").textContent=getUserAds().length;document.getElementById("favCount").textContent=getFav().length}}
+render();
+</script>
+<script src="/app.js"></script>
+</body></html>
